@@ -12,22 +12,39 @@ class DbCrud extends DbConnect {
 	public function login($user_email, $password) {
 		
 		//Prepared statement to help mitigate sqli
-		$cursor = $this->connection->prepare("SELECT memberId, isAdmin FROM members WHERE emailAddress = ? AND password = ?");
+		$cursor = $this->connection->prepare("SELECT memberId, isAdmin FROM members WHERE emailAddress = ? AND isDeactivated = 0");
 		//Query is passed separately to the parameters and the database is told to treat the paramaters as string
-		$cursor->bind_param('ss', $user_email, $password);
+		$cursor->bind_param('s', $user_email);
 		//The database escapes chars for me so I dont need to
 		$cursor->execute();
 
         $cursor->bind_result($member_id, $admin);
 		$result = $cursor->fetch();
+		//mysqli_free_result($result);
+		
+		$cursor ->free_result();
+		
 		//var_dump($result);
 		//exit(); 
 		//TODO Fail properly when username/password doesn't match - FIXED 08/01
 		//echo $result;
-		if (!$result) {
-			echo "Username or password incorrect"."<br>";
-			return false;
-		}
+		$this->username_or_password($result);
+		//echo $user_email;
+		//exit();
+		$cursor = $this->connection->prepare("SELECT `password` FROM `members` WHERE `emailAddress` = ?");
+		$cursor->bind_param('s', $user_email);
+		$cursor->execute();
+		$cursor->bind_result($db_hash);
+		$result = $cursor->fetch();
+		
+		if (password_verify($password, $db_hash)) {
+            echo"verified";
+        }
+        else
+        {
+			$this->username_or_password(False);
+        }
+		
 		if ($admin) {
 			session_name("admin");
 			session_start();
@@ -44,6 +61,15 @@ class DbCrud extends DbConnect {
 		
 	}
 		
+		
+		
+	public function username_or_password($result) {
+	
+		if (!$result) {
+			echo "Username or password incorrect"."<br>";
+			exit();
+		}
+	}		
 	
 	public function read() {
 		

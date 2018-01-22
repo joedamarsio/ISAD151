@@ -11,6 +11,15 @@ function hash_password($user_password) {
 }
 	
 //echo (hash_password("password"));
+
+$password_string = "password";
+  $password_hash = "$2y$10$.b8F0ISJ19NCcDjnq843HOXw8jjS.4hUem4jznVXf7JzvZjuE8.Ze";
+
+  if (password_verify($password_string, $password_hash)) {
+    echo "Yes";
+  } else {
+    echo "no";
+  }
 	
 
 ?>
