@@ -13,11 +13,14 @@
 //session_start();
 
 include_once "classes/db_crud.php";
-//include "hash_password.php";
+include "hash_password.php";
 
 if (isset($_POST["submit"])) {
 	$user_email = $_POST['user_email'];
 	$user_password = $_POST['user_password'];
+	$user_password = hash_password($user_password);
+	//echo $user_password;
+	//exit();
 	//echo $user_email."<br>";
 	$crud = new DbCrud();
 	$result = $crud->login($user_email, $user_password);
