@@ -37,11 +37,7 @@ class DbCrud extends DbConnect {
 		$cursor->bind_result($db_hash);
 		$result = $cursor->fetch();
 		
-		if (password_verify($password, $db_hash)) {
-            echo"verified";
-        }
-        else
-        {
+		if (!password_verify($password, $db_hash)) {
 			$this->username_or_password(False);
         }
 		
@@ -49,16 +45,17 @@ class DbCrud extends DbConnect {
 			session_name("admin");
 			session_start();
 			$_SESSION['admin'] = True;
-			echo "admin";
+			//echo "admin";
 		}
 		else {
 			session_name("user");
 			session_start();
 			$_SESSION['admin'] = False;
-			echo "user";
+			//echo "user";
 		}
-		//$this->read();
-		
+		//Go somewhere
+		header("location: index.html");
+
 	}
 		
 		
