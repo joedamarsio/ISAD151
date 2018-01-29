@@ -66,26 +66,16 @@ class DbCrud extends DbConnect {
 			echo "Username or password incorrect"."<br>";
 			exit();
 		}
-	}		
-	
-	public function read() {
-		
-		$result = $this->connection->query("SELECT team_name FROM football_teams");
-		// TODO Make this work 08/01
-		if (!$result) {
-			echo "No data"."<br>";
-			return false;
-		}
-		
-		$rows = array();
-		
-		while ($row = $result->fetch_assoc()) {
-			$rows[] = $row;
-		}
-		
-		return $rows;
+	}	
 
-	}
+
+    public function admin_add_user($user_details) {
+		
+		$cursor = $this->connection->prepare("INSERT INTO `members` (`memberId`, `firstName`, `surname`, `phoneNumber`, `houseNumberName`, `streetName`, `city`, `county`, `postcode`, `emailAddress`, `password`, `isAdmin`, `isDeactivated`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
+		$cursor->bind_param('sssssssssss', $user_details[0], $user_details[1], $user_details[2], $user_details[3], $user_details[4], $user_details[5], $user_details[6], $user_details[7], $user_details[8], $user_details[9]);
+		$cursor->execute();
+        echo "executed";
+	}	
 	
 }
 
