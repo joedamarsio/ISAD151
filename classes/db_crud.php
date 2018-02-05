@@ -71,10 +71,15 @@ class DbCrud extends DbConnect {
 
     public function admin_add_user($user_details) {
 		
+		//var_dump($user_details);
+		//exit();
+		
+		
 		$cursor = $this->connection->prepare("INSERT INTO `members` (`memberId`, `firstName`, `surname`, `phoneNumber`, `houseNumberName`, `streetName`, `city`, `county`, `postcode`, `emailAddress`, `password`, `isAdmin`, `isDeactivated`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
-		$cursor->bind_param('sssssssssss', $user_details[0], $user_details[1], $user_details[2], $user_details[3], $user_details[4], $user_details[5], $user_details[6], $user_details[7], $user_details[8], $user_details[9]);
-		$cursor->execute();
-        echo "executed";
+		$cursor->bind_param('ssssssssssd', $user_details[0], $user_details[1], $user_details[2], $user_details[3], $user_details[4], $user_details[5], $user_details[6], $user_details[7], $user_details[8], $user_details[9], $user_details[10]);
+		
+		$cursor->execute() or die("Didn't Work");
+        //echo "executed";
 	}	
 	
 }

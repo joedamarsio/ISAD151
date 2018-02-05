@@ -13,7 +13,6 @@
 		Admin User?: <input name="isAdmin" type = "checkbox"><br>
 		<input name="submit" type="submit" value="Submit"><br>
 	</form>
-
 </html>
 
 
@@ -36,7 +35,13 @@ if (isset($_POST["submit"])) {
 	$user_details[] = $_POST["postcode"];
 	$user_details[] = $_POST["user_email"];
 	$user_details[] = $_POST["user_password"];
-	$user_details[] = $_POST["isAdmin"];
+	if (isset($_POST["isAdmin"])) {
+		$user_details[] = 1;
+	} else {
+		$user_details[] = 0;
+	}
+	
+	//var_dump($user_details);
 	$crud = new DbCrud();
 	$add_new_user = $crud->admin_add_user($user_details);
 }
