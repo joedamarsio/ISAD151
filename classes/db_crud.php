@@ -87,6 +87,15 @@ class DbCrud extends DbConnect {
 		 $cursor->execute();
 	}
 	
+	public function admin_update_user_email($user_email, $user_id) {
+		
+		$cursor = $this->connection->prepare("UPDATE members SET emailAddress = ? WHERE memberId = ?");
+		$cursor->bind_param('si', $user_email, $user_id);
+		
+		$cursor->execute();
+	}
+		
+	
 }
 
 ?>
