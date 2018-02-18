@@ -21,7 +21,7 @@
 //session_start();
 
 include_once "classes/db_crud.php";
-//include "hash_password.php";
+include "hash_password.php";
 
 if (isset($_POST["submit"])) {
 	$user_details = array();
@@ -34,7 +34,9 @@ if (isset($_POST["submit"])) {
 	$user_details[] = $_POST["county"];
 	$user_details[] = $_POST["postcode"];
 	$user_details[] = $_POST["user_email"];
-	$user_details[] = $_POST["user_password"];
+	$user_password = $_POST['user_password'];
+	$user_password = hash_password($user_password);
+	$user_details[] = $user_password;
 	if (isset($_POST["isAdmin"])) {
 		$user_details[] = 1;
 	} else {
